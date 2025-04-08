@@ -133,7 +133,7 @@ def print_bulls_cows(x: int, y: int) -> None:
 
 number_of_digits = 4
 
-# Print greeting:
+# Print the greeting:
 
 print(f"""
 Hi there!
