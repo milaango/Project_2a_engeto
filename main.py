@@ -134,7 +134,6 @@ def print_bulls_cows(x: int, y: int) -> None:
 number_of_digits = 4
 
 # Print greeting:
-
 print(f"""
 Hi there!
 -----------------------------------------------
