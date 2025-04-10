@@ -121,14 +121,16 @@ def print_bulls_cows(x: int, y: int) -> None:
     2 bulls, 1 cow
     """
 
-    if x == 1 and y == 1:
-        print("1 bull, 1 cow.")
-    elif x != 1 and y == 1:
-        print(f"{x} bulls, 1 cow.")
-    elif x == 1 and y != 1:
-        print(f"1 bull, {y} cows.")
+    words = ["bull", "bulls", "cow", "cows"]
+    if x == 1:
+        bull = words[0]
     else:
-        print(f"{x} bulls, {y} cows.")
+        bull = words[1]
+    if y == 1:
+        cow = words[2]
+    else:
+        cow = words[3]
+    print(f"{x} {bull}, {y} {cow}.")
 
 
 number_of_digits = 4
