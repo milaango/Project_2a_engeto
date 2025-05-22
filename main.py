@@ -122,25 +122,69 @@ def print_bulls_cows(x: int, y: int) -> None:
     """
 
     words = ["bull", "bulls", "cow", "cows"]
-    if x == 1:
-        bull = words[0]
-    else:
-        bull = words[1]
-    if y == 1:
-        cow = words[2]
-    else:
-        cow = words[3]
+    bull = words[0] if x == 1 else words[1]
+    cow = words[2] if y == 1 else words[3]
     print(f"{x} {bull}, {y} {cow}.")
 
 
-number_of_digits = 4
+def play_game(users_guess):
+    """
+    Function that runs one game of bulls and cows.
 
-# Print the greeting:
+    :param users_guess: user's guess to be compared to the generated number
+    :type users_guess: str
+    :return: a pair of values representing the number of user's attempts
+        the duration time of the game in seconds
+    :rtype: tuple
 
-print(f"""
+    :Example:
+    >>> attempts, time = play_game("2741")
+    >>> attempts, time
+    (5, 23)
+    """
+
+    # Generating random number using function generate_unique_number():
+    random_number = generate_unique_number()
+    attempts = 1
+
+    # Starting timer
+    time_start = time()
+
+    # While loop (while the numbers don't match):
+    while users_guess != random_number:
+
+        # Validation of user's input:
+        while not check_input(users_guess, 4):
+            print("Try again: ")
+            users_guess = str(input())
+
+        # User's number may have changed after "validation block":    
+        if users_guess == random_number:
+            attempts += 1
+            break
+
+        # Compare user's number with the generated number:
+        attempts += 1
+        bulls, cows = count_bulls_cows(users_guess, random_number)
+        print_bulls_cows(bulls, cows)
+        users_guess = str(input())
+
+    # Stop the timer and format the time (seconds):
+    time_end = time()
+    users_time = round(time_end - time_start)
+
+    return attempts, users_time
+
+
+def main():
+
+    number_of_digits = 4
+    
+    # Print the greeting:
+    print(f"""
 Hi there!
 -----------------------------------------------
-I've generated a random {number_of_digits} digit number for you.
+I've generated a random 4-digit number for you.
 Let's play a bulls and cows game.
 
 -----------------------------------------------
@@ -148,58 +192,34 @@ Enter a number:
 -----------------------------------------------
 """)
 
-# Save statistics for each game round (guesses and time),
-# Results will be saved there after each game:
-statistics = (f"""Statistics (guesses / time (s)):
+    # Save statistics for each game round (guesses and time),
+    # Results will be saved there after each game:
+    statistics = (f"""
+Statistics (guesses / time (s)):
 . . . . . . . . . . . . . . . .
-""")
+    """)
 
-# While loop for repeating the game (until the user selects quit)
-while True:
+    # While loop for repeating the game (until the user selects quit)
+    while True:
 
-    users_number = str(input())
-    # If the user selects "q", it means they don't want to play another game:
-    if users_number == "q":
-        break
-    
-    # Generating random number using function generate_unique_number():
-    random_number = generate_unique_number()
-    
-    # Starting timer:
-    time_start = time()
-    attempts = 1
+        users_number = str(input())
+        # If the user selects "q", it means 
+        # they don't want to play another game:
+        if users_number == "q":
+            break
 
-    # While loop (while the numbers don't match):
-    while users_number != random_number:
+        # Play the game
+        number_of_attempts, time_attempt = play_game(users_number)
 
-        attempts += 1
+        # Save the information about the current game to statistics:
+        statistics += (f"""{number_of_attempts} / {time_attempt}
+    """
+    )
 
-        # Verification of conditions using the check_input() function,
-        # If conditions are not met, user is called to enter a number again:
-        if not check_input(users_number, number_of_digits):
-            print("Try again:")
-            users_number = str(input())
-
-        # When all the conditions are verified, it's possible to compare
-        # user's number with the generated number:
-        else:
-            bulls, cows = count_bulls_cows(users_number, random_number)
-            print_bulls_cows(bulls, cows)
-            users_number = str(input())
-
-    # Stop the timer and format the time (seconds):
-    time_end = time()
-    users_time = round(time_end - time_start)
-
-    # Save the information about the current game to statistics:
-    statistics += (f"""{attempts} / {users_time}
-"""
-)
-
-    print(f"""
+        print(f"""
 Correct, you've guessed the right number
-in {attempts} guesses!
-Your time: {users_time} seconds
+in {number_of_attempts} guesses!
+Your time: {time_attempt} seconds
 -----------------------------------------------
 That's amazing!
 -----------------------------------------------
@@ -210,4 +230,8 @@ If you'd like to play again, enter a number.
 Otherwise, press "q" to quit the game.
 -----------------------------------------------
 """
-)
+    )
+
+
+if __name__ == "__main__":
+    main()
