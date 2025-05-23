@@ -127,7 +127,7 @@ def print_bulls_cows(x: int, y: int) -> None:
     print(f"{x} {bull}, {y} {cow}.")
 
 
-def play_game(users_guess):
+def play_game(users_guess: str) -> tuple:
     """
     Function that runs one game of bulls and cows.
 
